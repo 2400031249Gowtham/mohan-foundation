@@ -204,10 +204,10 @@ export default function HeroSection() {
         </div>
         <div className="hero-right relative flex items-center justify-center">
           {/* Large Radial Glow Behind Heart */}
-          <div className="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-[#C8303A] rounded-full blur-[120px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
+          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] max-lg:w-[60vw] max-lg:h-[60vw] bg-[#C8303A] rounded-full blur-[120px] max-lg:blur-[60px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
 
           {/* Centered and appropriately sized visual container (75% vw position) */}
-          <div className="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2 w-[900px] h-[800px] flex items-center justify-center pointer-events-none z-10">
+          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[800px] max-lg:w-[85vw] max-lg:h-[85vw] max-lg:max-w-[400px] max-lg:max-h-[400px] flex items-center justify-center pointer-events-none z-10">
             {/* DNA Background */}
             <motion.div 
                className="absolute inset-0 opacity-[0.04]"
@@ -223,12 +223,12 @@ export default function HeroSection() {
 
             {/* Concentric Pulse Rings */}
             <motion.div 
-              className="absolute w-[320px] h-[320px] rounded-full border-[1.5px] border-mf-navy/20"
+              className="absolute w-[320px] h-[320px] rounded-full border-[1.5px] border-mf-navy/20 max-lg:hidden"
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
             />
             <motion.div 
-              className="absolute w-[440px] h-[440px] rounded-full border-[1.5px] border-mf-red/15"
+              className="absolute w-[440px] h-[440px] rounded-full border-[1.5px] border-mf-red/15 max-lg:hidden"
               animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
               transition={{ duration: 4, delay: 2, repeat: Infinity, ease: "easeOut" }}
             />
@@ -237,7 +237,7 @@ export default function HeroSection() {
             {isMounted && Array.from({ length: 20 }).map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
-                className="absolute w-1.5 h-1.5 rounded-full bg-mf-navy"
+                className="absolute w-1.5 h-1.5 rounded-full bg-mf-navy max-lg:hidden"
                 initial={{ 
                   x: (Math.random() - 0.5) * 600, 
                   y: (Math.random() - 0.5) * 600,
@@ -340,15 +340,22 @@ export default function HeroSection() {
 
         /* ── RESPONSIVE ── */
         @media(max-width:1024px){
-          .hero-inner{grid-template-columns:1fr;gap:2.5rem}
-          .hero-right{display:none}
+          #hero{padding-top:7rem;padding-bottom:3rem}
+          .hero-inner{display:flex;flex-direction:column;gap:1.5rem}
+          .hero-left{display:contents}
+          .hero-tag{order:1;margin-bottom:0}
+          .hero-h1{order:2;margin-bottom:0;font-size:clamp(2.5rem,8vw,3.5rem)}
+          .hero-right{display:flex;order:3;width:100%;height:320px;min-height:unset;margin:1rem 0}
+          .hero-sub{order:4;margin-bottom:1.5rem}
+          .hero-stats{order:5}
         }
         @media(max-width:768px){
           .hero-stats{grid-template-columns:repeat(2,1fr)}
         }
         @media(max-width:480px){
-          .hero-h1{font-size:1.9rem}
+          .hero-h1{font-size:2.2rem}
           .hero-btns{flex-direction:column}
+          .hero-right{height:280px}
         }
       `}} />
     </section>

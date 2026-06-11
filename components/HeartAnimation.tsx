@@ -10,7 +10,7 @@ export default function HeartAnimation() {
   const imgRef = useRef<HTMLImageElement>(null)
   const mouse = useRef({ x: 0, y: 0 })
   const current = useRef({ x: 0, y: 0 })
-  const rafRef = useRef<number>()
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -55,7 +55,9 @@ export default function HeartAnimation() {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current)
+      }
     }
   }, [])
 

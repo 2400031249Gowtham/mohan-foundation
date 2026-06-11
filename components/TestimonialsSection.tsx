@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const testimonials = [
   {
@@ -41,9 +41,9 @@ const containerVariants = {
     transition: { staggerChildren: 0.15 }
   }
 };
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 50 } }
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 50 } }
 };
 
 export default function TestimonialsSection() {
