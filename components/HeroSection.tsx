@@ -102,21 +102,30 @@ export default function HeroSection() {
 
   // ── HERO GSAP ANIMATIONS ──
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    let timer: NodeJS.Timeout;
+    const ctx = gsap.context(() => {
+      timer = setTimeout(() => {
+        // Safe check for elements before animating to prevent GSAP warnings
+        if (!document.querySelector('.hero-tag')) return;
+        
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      tl.from('.hero-tag', { y: 30, opacity: 0, duration: 0.6 })
-        .from('#hl1, .line1', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('#hl2, .line2', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('#hl3, .line3', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('#hl4, .line4', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('.hero-sub', { y: 30, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('.hstat', { y: 20, opacity: 0, stagger: 0.1, duration: 0.4 }, '-=0.2')
-        .from('.hero-right', { scale: 0.95, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.4')
-        .from('.scroll-cue', { opacity: 0, y: 20, duration: 0.5 }, '-=0.3');
-    }, 300);
+        tl.from('.hero-tag', { y: 30, opacity: 0, duration: 0.6 })
+          .from('#hl1, .line1', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
+          .from('#hl2, .line2', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
+          .from('#hl3, .line3', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
+          .from('#hl4, .line4', { y: 60, opacity: 0, duration: 0.5 }, '-=0.3')
+          .from('.hero-sub', { y: 30, opacity: 0, duration: 0.5 }, '-=0.3')
+          .from('.hstat', { y: 20, opacity: 0, stagger: 0.1, duration: 0.4 }, '-=0.2')
+          .from('.hero-right', { scale: 0.95, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.4')
+          .from('.scroll-cue', { opacity: 0, y: 20, duration: 0.5 }, '-=0.3');
+      }, 300);
+    });
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
   }, []);
 
   // ── ANIMATED COUNTERS ──
@@ -207,7 +216,7 @@ export default function HeroSection() {
           <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] max-lg:w-[60vw] max-lg:h-[60vw] bg-[#C8303A] rounded-full blur-[120px] max-lg:blur-[60px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
 
           {/* Centered and appropriately sized visual container (75% vw position) */}
-          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[800px] max-lg:w-[85vw] max-lg:h-[85vw] max-lg:max-w-[400px] max-lg:max-h-[400px] flex items-center justify-center pointer-events-none z-10">
+          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[800px] max-lg:w-[80vw] max-lg:h-[80vw] max-lg:max-w-[320px] max-lg:max-h-[320px] flex items-center justify-center pointer-events-none z-10 mx-auto">
             {/* DNA Background */}
             <motion.div 
                className="absolute inset-0 opacity-[0.04]"
@@ -223,12 +232,12 @@ export default function HeroSection() {
 
             {/* Concentric Pulse Rings */}
             <motion.div 
-              className="absolute w-[320px] h-[320px] rounded-full border-[1.5px] border-mf-navy/20 max-lg:hidden"
+              className="absolute w-[320px] h-[320px] max-lg:w-[250px] max-lg:h-[250px] rounded-full border-[1.5px] border-mf-navy/20"
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
             />
             <motion.div 
-              className="absolute w-[440px] h-[440px] rounded-full border-[1.5px] border-mf-red/15 max-lg:hidden"
+              className="absolute w-[440px] h-[440px] max-lg:w-[320px] max-lg:h-[320px] rounded-full border-[1.5px] border-mf-red/15"
               animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
               transition={{ duration: 4, delay: 2, repeat: Infinity, ease: "easeOut" }}
             />
@@ -237,7 +246,7 @@ export default function HeroSection() {
             {isMounted && Array.from({ length: 20 }).map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
-                className="absolute w-1.5 h-1.5 rounded-full bg-mf-navy max-lg:hidden"
+                className="absolute w-1.5 h-1.5 rounded-full bg-mf-navy"
                 initial={{ 
                   x: (Math.random() - 0.5) * 600, 
                   y: (Math.random() - 0.5) * 600,
@@ -257,7 +266,7 @@ export default function HeroSection() {
 
             {/* Main Visual */}
             <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
+              animate={{ scale: [1, 1.05, 1], y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="relative z-10 w-full h-full"
               style={{
@@ -345,8 +354,8 @@ export default function HeroSection() {
           .hero-left{display:contents}
           .hero-tag{order:1;margin-bottom:0}
           .hero-h1{order:2;margin-bottom:0;font-size:clamp(2.5rem,8vw,3.5rem)}
-          .hero-right{display:flex;order:3;width:100%;height:320px;min-height:unset;margin:1rem 0}
-          .hero-sub{order:4;margin-bottom:1.5rem}
+          .hero-sub{order:3;margin-bottom:0.5rem}
+          .hero-right{display:flex;order:4;width:100%;height:320px;min-height:unset;margin:1rem 0}
           .hero-stats{order:5}
         }
         @media(max-width:768px){

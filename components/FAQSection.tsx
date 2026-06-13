@@ -2,7 +2,20 @@
 
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, BookOpen, Globe, Users, Star } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+
+const sectionVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+};
+
+const fadeUpVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
 
 type CategoryId = 'general' | 'access' | 'fees';
 
@@ -116,20 +129,26 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="py-24 bg-white font-sans overflow-hidden border-t border-black/5">
-      <div className="max-w-[1280px] mx-auto px-8">
+      <motion.div 
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="max-w-[1280px] mx-auto px-8"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-16 items-start">
 
           {/* ── LEFT COLUMN ──────────────────────────────────────────────── */}
           <div className="lg:sticky lg:top-32 flex flex-col gap-6">
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-mf-navy/5 border border-mf-navy/10 text-mf-navy px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] w-max">
+            <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 bg-mf-navy/5 border border-mf-navy/10 text-mf-navy px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] w-max">
               <Globe size={14} className="text-mf-red" />
               GLOBAL IMPACT
-            </div>
+            </motion.div>
 
             {/* Heading */}
-            <div>
+            <motion.div variants={fadeUpVariants}>
               <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-bold text-mf-dark leading-[1.1] mb-4">
                 Learning Across<br />
                 <span className="bg-gradient-to-br from-mf-red to-mf-gold bg-clip-text text-transparent italic">Borders.</span>
@@ -137,10 +156,10 @@ export default function FAQSection() {
               <p className="text-mf-mid text-[1rem] leading-[1.6] max-w-[400px]">
                 MOHAN Foundation's e-learning platform bridges geographical gaps, providing world-class training in organ donation and transplantation globally.
               </p>
-            </div>
+            </motion.div>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 mt-4">
+            <motion.div variants={fadeUpVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 mt-4">
               {learningStats.map(({ icon: Icon, value, label, bg }) => (
                 <div
                   key={label}
@@ -155,14 +174,14 @@ export default function FAQSection() {
                   </div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* ── RIGHT COLUMN (FAQ) ─────────────────────────────────────────────── */}
           <div className="flex flex-col w-full">
 
             {/* FAQ Heading */}
-            <div className="mb-10 text-center lg:text-left">
+            <motion.div variants={fadeUpVariants} className="mb-10 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 bg-mf-red/10 border border-mf-red/20 text-mf-red px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] mb-4">
                 <BookOpen size={14} />
                 FAQ
@@ -173,10 +192,10 @@ export default function FAQSection() {
               <p className="text-mf-mid text-[0.95rem] leading-relaxed max-w-[500px] mx-auto lg:mx-0">
                 Everything you need to know about our courses, platform access, and pricing — all in one place.
               </p>
-            </div>
+            </motion.div>
 
             {/* Category tabs */}
-            <div className="flex justify-center lg:justify-start mb-8">
+            <motion.div variants={fadeUpVariants} className="flex justify-center lg:justify-start mb-8">
               <div className="inline-flex bg-mf-cream border border-black/5 p-1.5 rounded-[16px] shadow-[0_2px_10px_rgba(0,0,0,0.03)] relative overflow-hidden">
                 <button 
                   onClick={() => handleCategory('general')}
@@ -197,10 +216,10 @@ export default function FAQSection() {
                   Fees
                 </button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Accordion list */}
-            <div className="flex flex-col gap-3">
+            <motion.div variants={fadeUpVariants} className="flex flex-col gap-3">
               <AnimatePresence mode="wait">
                 <motion.div 
                   key={activeCategory}
@@ -257,10 +276,10 @@ export default function FAQSection() {
                   })}
                 </motion.div>
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Bottom CTA */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-[20px] border border-mf-navy/10 bg-mf-navy/5 px-6 py-5">
+            <motion.div variants={fadeUpVariants} className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-[20px] border border-mf-navy/10 bg-mf-navy/5 px-6 py-5">
               <div className="text-center sm:text-left">
                 <p className="text-mf-dark font-bold text-[0.95rem]">Still have questions?</p>
                 <p className="text-mf-mid text-[0.8rem] mt-0.5">Our support team is happy to help.</p>
@@ -268,11 +287,11 @@ export default function FAQSection() {
               <button className="bg-mf-navy hover:bg-mf-navy-light text-white text-[0.85rem] font-bold px-6 py-3 rounded-full transition-colors whitespace-nowrap shadow-[0_4px_15px_rgba(26,47,94,0.2)] hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(26,47,94,0.25)]">
                 Contact Us
               </button>
-            </div>
+            </motion.div>
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

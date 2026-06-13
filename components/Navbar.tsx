@@ -3,7 +3,29 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Search, ChevronDown, ChevronUp, Menu, X, BookOpen, Users, Stethoscope, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+
+const drawerVariants: Variants = {
+  hidden: { x: '100%' },
+  visible: { x: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+  exit: { x: '100%', transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }
+};
+
+const menuStaggerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.15,
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const menuItemVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
+};
 
 const courseItems = [
   {
@@ -49,6 +71,22 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleEsc = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setMenuOpen(false);
+      };
+      window.addEventListener('keydown', handleEsc);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleEsc);
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [menuOpen]);
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-400">
@@ -190,16 +228,43 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <AnimatePresence>
           {menuOpen && (
-            <motion.div 
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden bg-white border-t border-gray-100 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.1)] absolute top-full left-0 w-full"
-            >
-              <ul className="flex flex-col px-6 py-4 gap-1">
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => setMenuOpen(false)}
+                className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+              />
+
+              {/* Drawer */}
+              <motion.div 
+                variants={drawerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="lg:hidden fixed top-0 right-0 h-[100vh] w-[80vw] max-w-[360px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-[100] overflow-y-auto flex flex-col"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {/* Header with Close Button inside Drawer */}
+                <div className="flex items-center justify-between p-6 border-b border-gray-100">
+                  <span className="font-bold text-mf-navy text-[1.1rem]">Menu</span>
+                  <button onClick={() => setMenuOpen(false)} className="text-mf-navy hover:text-mf-red transition-colors p-1" aria-label="Close menu">
+                    <X size={26} />
+                  </button>
+                </div>
+
+                <motion.ul 
+                  variants={menuStaggerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="flex flex-col px-6 py-4 gap-1"
+                >
 
                 {navLinks.slice(0, 2).map(({ label, href }) => (
-                  <li key={label}>
+                  <motion.li key={label} variants={menuItemVariants}>
                     <Link
                       href={href}
                       onClick={() => setMenuOpen(false)}
@@ -207,11 +272,11 @@ export default function Navbar() {
                     >
                       {label}
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
 
                 {/* Courses accordion */}
-                <li>
+                <motion.li variants={menuItemVariants}>
                   <div className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-mf-dark font-medium hover:bg-mf-blush hover:text-mf-red transition-colors text-[0.95rem] cursor-pointer" onClick={() => setCoursesOpen(o => !o)}>
                     <span>Courses</span>
                     {coursesOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -238,10 +303,10 @@ export default function Navbar() {
                       </motion.ul>
                     )}
                   </AnimatePresence>
-                </li>
+                </motion.li>
 
                 {navLinks.slice(2).map(({ label, href }) => (
-                  <li key={label}>
+                  <motion.li key={label} variants={menuItemVariants}>
                     <Link
                       href={href}
                       onClick={() => setMenuOpen(false)}
@@ -249,16 +314,17 @@ export default function Navbar() {
                     >
                       {label}
                     </Link>
-                  </li>
+                  </motion.li>
                 ))}
 
-                <li className="pt-4 pb-2">
+                <motion.li className="pt-4 pb-2" variants={menuItemVariants}>
                    <Link href="/#courses" onClick={() => setMenuOpen(false)} className="block text-center w-full bg-mf-red hover:bg-mf-red-light text-white px-6 py-3 rounded-full font-semibold text-[0.95rem] transition-all">
                     Explore Courses
                   </Link>
-                </li>
-              </ul>
-            </motion.div>
+                </motion.li>
+              </motion.ul>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </nav>

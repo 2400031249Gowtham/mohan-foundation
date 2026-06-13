@@ -4,12 +4,96 @@ import React from 'react';
 import { Phone, ArrowRight, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 import DnaBackground from './DnaBackground';
+import { motion, useMotionValue, useSpring, useTransform, Variants } from 'framer-motion';
+
+const fadeUpVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const sectionVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+  }
+};
+
+const featuresData = [
+  { icon: '📖', title: 'Professional Training', desc: 'CPD-accredited courses for healthcare professionals in organ donation and transplantation.', bg: 'bg-[#fee2e2]' },
+  { icon: '🌐', title: 'National Reach', desc: 'Building India-wide awareness and an ethical ecosystem for deceased organ donation since 1997.', bg: 'bg-[#d1fae5]' },
+  { icon: '🏅', title: 'CPD Accredited', desc: 'Formal CPD certificates issued post-training to fulfil mandatory and reflective CPD requirements.', bg: 'bg-[#fef3c7]' },
+  { icon: '👥', title: 'Community Impact', desc: "Over 12,000+ trained professionals actively contributing to India's transplant ecosystem.", bg: 'bg-[#e0e7ff]' },
+];
+
+function FeatureCard({ icon, title, desc, delay, bg }: { icon: string, title: string, desc: string, delay: number, bg: string }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["3deg", "-3deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-3deg", "3deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      variants={fadeUpVariants}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-white/60 shadow-xl hover:shadow-2xl hover:-translate-y-[8px] hover:scale-[1.02] transition-all duration-400 group flex flex-col h-full relative z-10"
+    >
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+      
+      {/* Icon */}
+      <div className="relative mb-5 w-12 h-12" style={{ transform: "translateZ(30px)" }}>
+        <motion.div 
+          className={`absolute inset-0 rounded-full ${bg} blur-[8px] opacity-60 group-hover:opacity-100 transition-opacity duration-400`} 
+        />
+        <motion.div 
+          animate={{ y: [0, -4, 0] }} 
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className={`relative w-12 h-12 rounded-full ${bg} flex items-center justify-center text-[1.2rem] shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-white/60`}
+        >
+          {icon}
+        </motion.div>
+      </div>
+
+      <div className="font-bold text-[0.95rem] text-mf-dark mb-2 group-hover:text-mf-red transition-colors duration-300" style={{ transform: "translateZ(20px)" }}>{title}</div>
+      <div className="text-[0.8rem] text-mf-light leading-[1.6]" style={{ transform: "translateZ(10px)" }}>{desc}</div>
+    </motion.div>
+  );
+}
 
 export default function AboutUsSection() {
   return (
     <section id="about" className="py-24 bg-white overflow-hidden relative">
       <DnaBackground className="opacity-[0.04]" />
-      <div className="max-w-[1280px] mx-auto px-8">
+      <motion.div 
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="max-w-[1280px] mx-auto px-8"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* LEFT COLUMN: Visual Area */}
@@ -46,49 +130,32 @@ export default function AboutUsSection() {
           </div>
 
           {/* RIGHT COLUMN: Content */}
-          <div className="w-full">
-            <div className="inline-flex items-center gap-2 bg-mf-red/10 border border-mf-red/20 text-mf-red px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] mb-3.5">
+          <div className="w-full flex flex-col items-start">
+            <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 bg-mf-red/10 border border-mf-red/20 text-mf-red px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] mb-3.5">
               ABOUT US
-            </div>
+            </motion.div>
             
-            <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] font-bold text-mf-dark leading-[1.1] mb-3">
+            <motion.h2 variants={fadeUpVariants} className="font-serif text-[clamp(2rem,4vw,3.5rem)] font-bold text-mf-dark leading-[1.1] mb-3">
               MOHAN Foundation<br/>
               <span className="bg-gradient-to-br from-mf-red to-mf-gold bg-clip-text text-transparent italic">Empowers Lives.</span>
-            </h2>
+            </motion.h2>
             
-            <p className="text-mf-mid text-[1rem] leading-[1.75] mb-3">
+            <motion.p variants={fadeUpVariants} className="text-mf-mid text-[1rem] leading-[1.75] mb-3">
               MOHAN Foundation (Multi Organ Harvesting Aid Network) is a not-for-profit NGO established in 1997, dedicated to creating a supportive ecosystem for deceased organ donations in India.
-            </p>
-            <p className="text-mf-mid text-[1rem] leading-[1.75] mb-7">
+            </motion.p>
+            <motion.p variants={fadeUpVariants} className="text-mf-mid text-[1rem] leading-[1.75] mb-7">
               We promote ethical organ donation and transplantation through education, training, and public awareness — <strong className="text-mf-dark font-bold">saving lives one pledge at a time.</strong>
-            </p>
+            </motion.p>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-7">
-              <div className="bg-mf-soft rounded-[14px] p-4 border border-black/5 hover:bg-white hover:shadow-[0_6px_20px_rgba(26,47,94,0.08)] hover:-translate-y-1 transition-all">
-                <div className="w-9 h-9 rounded-[10px] bg-[#fee2e2] flex items-center justify-center text-[1rem] mb-2.5">📖</div>
-                <div className="font-bold text-[0.85rem] text-mf-dark mb-1">Professional Training</div>
-                <div className="text-[0.75rem] text-mf-light leading-[1.5]">CPD-accredited courses for healthcare professionals in organ donation and transplantation.</div>
-              </div>
-              <div className="bg-mf-soft rounded-[14px] p-4 border border-black/5 hover:bg-white hover:shadow-[0_6px_20px_rgba(26,47,94,0.08)] hover:-translate-y-1 transition-all">
-                <div className="w-9 h-9 rounded-[10px] bg-[#d1fae5] flex items-center justify-center text-[1rem] mb-2.5">🌐</div>
-                <div className="font-bold text-[0.85rem] text-mf-dark mb-1">National Reach</div>
-                <div className="text-[0.75rem] text-mf-light leading-[1.5]">Building India-wide awareness and an ethical ecosystem for deceased organ donation since 1997.</div>
-              </div>
-              <div className="bg-mf-soft rounded-[14px] p-4 border border-black/5 hover:bg-white hover:shadow-[0_6px_20px_rgba(26,47,94,0.08)] hover:-translate-y-1 transition-all">
-                <div className="w-9 h-9 rounded-[10px] bg-[#fef3c7] flex items-center justify-center text-[1rem] mb-2.5">🏅</div>
-                <div className="font-bold text-[0.85rem] text-mf-dark mb-1">CPD Accredited</div>
-                <div className="text-[0.75rem] text-mf-light leading-[1.5]">Formal CPD certificates issued post-training to fulfil mandatory and reflective CPD requirements.</div>
-              </div>
-              <div className="bg-mf-soft rounded-[14px] p-4 border border-black/5 hover:bg-white hover:shadow-[0_6px_20px_rgba(26,47,94,0.08)] hover:-translate-y-1 transition-all">
-                <div className="w-9 h-9 rounded-[10px] bg-[#e0e7ff] flex items-center justify-center text-[1rem] mb-2.5">👥</div>
-                <div className="font-bold text-[0.85rem] text-mf-dark mb-1">Community Impact</div>
-                <div className="text-[0.75rem] text-mf-light leading-[1.5]">Over 12,000+ trained professionals actively contributing to India's transplant ecosystem.</div>
-              </div>
-            </div>
+            <motion.div variants={fadeUpVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full" style={{ perspective: 1000 }}>
+              {featuresData.map((f, i) => (
+                <FeatureCard key={i} {...f} delay={i * 0.15} />
+              ))}
+            </motion.div>
 
             {/* Call to Actions - Preserving Links */}
-            <div className="flex flex-wrap items-center gap-4">
+            <motion.div variants={fadeUpVariants} className="flex flex-wrap items-center gap-4">
               <Link 
                 href="/enquire-us" 
                 className="bg-mf-red hover:bg-mf-red-light text-white px-6 py-3 rounded-full font-bold text-[0.85rem] transition-all shadow-[0_8px_25px_rgba(200,48,58,0.35)] hover:-translate-y-px"
@@ -106,11 +173,11 @@ export default function AboutUsSection() {
               <a href="tel:+916374773957" className="bg-mf-navy/10 hover:bg-mf-navy/15 text-mf-navy px-6 py-3 rounded-full font-bold text-[0.85rem] transition-all hover:-translate-y-px flex items-center gap-2">
                 <Phone size={14}/> Call Now
               </a>
-            </div>
+            </motion.div>
 
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

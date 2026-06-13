@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { MapPin, Mail, Phone } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 function IconFacebook() {
   return (
@@ -88,7 +89,13 @@ export default function FooterSection() {
       <div className="absolute top-[-100px] right-[-100px] w-[300px] h-[300px] bg-[#D93A43]/10 rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute bottom-[-100px] left-[-100px] w-[300px] h-[300px] bg-[#16213E]/5 rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="pt-24 pb-16 relative z-10">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="pt-24 pb-16 relative z-10"
+      >
         <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Brand & About (Left) */}
@@ -197,7 +204,7 @@ export default function FooterSection() {
             </div>
           </a>
         </div>
-      </div>
+      </motion.div>
 
       {/* Bottom Bar */}
       <div className="border-t border-[rgba(0,0,0,0.08)] py-6 relative z-10">
