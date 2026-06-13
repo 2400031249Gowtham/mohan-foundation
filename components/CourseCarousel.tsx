@@ -79,7 +79,7 @@ export default function CourseCarousel({ heading, courses, direction = 'forward'
   }, [isHovered, autoStep]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="container-fluid">
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-12">
@@ -131,9 +131,9 @@ export default function CourseCarousel({ heading, courses, direction = 'forward'
             <div
               key={`${course.id}-${i}`}
               ref={i === 0 ? firstCardRef : undefined}
-              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 bg-white rounded-xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-gray-100 overflow-hidden group"
+              className="w-[85vw] max-w-[400px] shrink-0 flex flex-col bg-white rounded-xl shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-gray-100 overflow-hidden group"
             >
-              <div className="h-56 w-full overflow-hidden relative">
+              <div className="aspect-video w-full overflow-hidden relative shrink-0">
                 <Image
                   src={course.image}
                   alt={course.title}
@@ -144,12 +144,12 @@ export default function CourseCarousel({ heading, courses, direction = 'forward'
                 />
               </div>
 
-              <div className="p-6">
+              <div className="p-[clamp(1rem,3vw,1.5rem)] flex flex-col flex-grow">
                 <span className="inline-block bg-[#e8ecf4] text-[#203c7c] text-xs font-bold px-3 py-1.5 rounded-md mb-4">
                   {course.tag}
                 </span>
 
-                <h3 className="text-[1.15rem] font-extrabold text-gray-900 mb-4 leading-snug line-clamp-2 h-12">
+                <h3 className="text-[clamp(1rem,2vw,1.15rem)] font-extrabold text-gray-900 mb-4 leading-snug">
                   {course.title}
                 </h3>
 
@@ -179,12 +179,12 @@ export default function CourseCarousel({ heading, courses, direction = 'forward'
                   <span className="text-xs text-gray-500 ml-1">({course.reviews} Reviews)</span>
                 </div>
 
-                <div className="h-px w-full bg-gray-100 mb-6"></div>
+                <div className="h-px w-full bg-gray-100 mb-6 mt-auto"></div>
 
                 <div className="flex items-center justify-between">
                   <Link 
                     href={`/courses/${course.id}`}
-                    className="flex items-center gap-2 bg-[#203c7c] hover:bg-blue-900 text-white px-5 py-2.5 rounded-md font-semibold text-sm transition-colors"
+                    className="flex items-center gap-2 bg-[#203c7c] hover:bg-blue-900 text-white px-5 py-2.5 rounded-md font-semibold text-[clamp(0.75rem,1.5vw,0.85rem)] transition-colors relative z-[100]"
                   >
                     Register Now
                     <ArrowRightCircle size={18} className="text-white/80" />

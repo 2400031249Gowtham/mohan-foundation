@@ -21,7 +21,9 @@ export default function Infinite3DCarousel<T extends { uniqueKey?: string, id?: 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [maxHeight, setMaxHeight] = useState(650);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Ensure enough items for infinite loop visually
   const displayItems = useMemo(() => {
@@ -32,6 +34,35 @@ export default function Infinite3DCarousel<T extends { uniqueKey?: string, id?: 
     }
     return arr.map((item, index) => ({ ...item, _loopId: `${item.uniqueKey || item.id}-${index}` }));
   }, [items]);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const updateHeight = () => {
+      if (!containerRef.current) return;
+      let maxH = 500;
+      const cards = containerRef.current.querySelectorAll('.carousel-card-inner > div');
+      cards.forEach(card => {
+        if (card.scrollHeight > maxH) {
+          maxH = card.scrollHeight;
+        }
+      });
+      // Add some padding to account for the 3D Y-translation and shadows
+      setMaxHeight(maxH + 120);
+    };
+
+    // Initial check
+    setTimeout(updateHeight, 100);
+
+    const observer = new ResizeObserver(() => updateHeight());
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+      const cards = containerRef.current.querySelectorAll('.carousel-card-inner > div');
+      cards.forEach(card => observer.observe(card));
+    }
+    return () => observer.disconnect();
+  }, [isMobile, displayItems, cardWidthDesktop]);
+
+
 
   const TOTAL_WIDTH = displayItems.length * itemWidth;
 
@@ -150,12 +181,12 @@ export default function Infinite3DCarousel<T extends { uniqueKey?: string, id?: 
           z: isMobile ? mobZ : deskZ,
           zIndex: isMobile ? mobZIndex : deskZIndex,
         }}
-        className="flex justify-center items-center cursor-pointer"
+        className={`flex justify-center items-center cursor-pointer carousel-card-wrapper ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}`}
       >
         <motion.div 
           animate={isActive ? { y: [0, -6, 0] } : { y: 0 }}
           transition={{ duration: 4, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
-          className="w-full h-full p-4" // Padding acts as the visual gap
+          className="w-full h-full p-4 carousel-card-inner" // Padding acts as the visual gap
         >
           {renderCard(item, isActive, !isMobile)}
         </motion.div>
@@ -216,8 +247,9 @@ export default function Infinite3DCarousel<T extends { uniqueKey?: string, id?: 
   return (
     <div className="w-full flex flex-col items-center hidden md:flex">
       <motion.div
-        className="relative w-full h-[650px] overflow-hidden flex justify-center items-center cursor-grab active:cursor-grabbing"
-        style={{ perspective: 1800, transformStyle: "preserve-3d" }}
+        ref={containerRef}
+        className="relative w-full overflow-hidden flex justify-center items-center cursor-grab active:cursor-grabbing transition-[min-height] duration-300"
+        style={{ perspective: 1800, transformStyle: "preserve-3d", minHeight: maxHeight }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onPanStart={handlePanStart}

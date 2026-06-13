@@ -211,12 +211,12 @@ export default function HeroSection() {
             <div className="hstat"><div className="hstat-val" data-count="1997" data-raw="true">0</div><div className="hstat-lbl">Est. Year</div></div>
           </div>
         </div>
-        <div className="hero-right relative flex items-center justify-center">
+        <div className="hero-right relative flex items-center justify-center w-full max-w-[700px] mx-auto aspect-square lg:aspect-auto">
           {/* Large Radial Glow Behind Heart */}
-          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] max-lg:w-[60vw] max-lg:h-[60vw] bg-[#C8303A] rounded-full blur-[120px] max-lg:blur-[60px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(280px,80%,450px)] aspect-square bg-[#C8303A] rounded-full blur-[120px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
 
-          {/* Centered and appropriately sized visual container (75% vw position) */}
-          <div className="absolute top-1/2 lg:left-[55%] max-lg:left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[800px] max-lg:w-[80vw] max-lg:h-[80vw] max-lg:max-w-[320px] max-lg:max-h-[320px] flex items-center justify-center pointer-events-none z-10 mx-auto">
+          {/* Centered visual container */}
+          <div className="relative lg:absolute lg:top-1/2 lg:left-[55%] lg:-translate-x-1/2 lg:-translate-y-1/2 w-full aspect-square flex items-center justify-center pointer-events-none z-10 mx-auto">
             {/* DNA Background */}
             <motion.div 
                className="absolute inset-0 opacity-[0.04]"
@@ -232,12 +232,12 @@ export default function HeroSection() {
 
             {/* Concentric Pulse Rings */}
             <motion.div 
-              className="absolute w-[320px] h-[320px] max-lg:w-[250px] max-lg:h-[250px] rounded-full border-[1.5px] border-mf-navy/20"
+              className="absolute w-[clamp(250px,35vw,320px)] aspect-square rounded-full border-[1.5px] border-mf-navy/20"
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
             <motion.div 
-              className="absolute w-[440px] h-[440px] max-lg:w-[320px] max-lg:h-[320px] rounded-full border-[1.5px] border-mf-red/15"
+              className="absolute w-[clamp(320px,45vw,440px)] aspect-square rounded-full border-[1.5px] border-mf-red/15"
               animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
               transition={{ duration: 4, delay: 2, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
@@ -279,6 +279,7 @@ export default function HeroSection() {
                 src="/images/master.png" 
                 alt="Prosthetic robotic hand holding anatomical heart" 
                 fill 
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
                 priority
               />
@@ -286,7 +287,7 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      <div className="scroll-cue">
+      <div className="hero-scroll scroll-cue">
         <span>SCROLL</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </div>
@@ -313,33 +314,33 @@ export default function HeroSection() {
         #hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
 
         /* ── HERO ── */
-        #hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:8rem;padding-bottom:3rem;background:#FDF8F3}
+        #hero{min-height:min(100svh, 1100px);display:flex;align-items:center;position:relative;overflow:hidden;padding-top:8rem;padding-bottom:3rem;background:#FDF8F3}
         .hero-bg-grid{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(var(--red) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:1}
-        .hero-inner{max-width:1280px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:2;width:100%}
-        .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,48,58,.08);border:1px solid rgba(200,48,58,.2);color:var(--red);padding:.4rem 1rem;border-radius:999px;font-size:.75rem;font-weight:700;letter-spacing:.07em;margin-bottom:1.5rem}
+        .hero-inner{max-width:2560px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,4vw,5rem);align-items:center;position:relative;z-index:2;width:100%}
+        .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,48,58,.08);border:1px solid rgba(200,48,58,.2);color:var(--red);padding:.4rem 1rem;border-radius:999px;font-size:clamp(0.7rem,1vw,0.85rem);font-weight:700;letter-spacing:.07em;margin-bottom:1.5rem}
         .hero-tag .pulse{width:7px;height:7px;background:var(--red);border-radius:50%;animation:pg 2s ease-in-out infinite}
         @keyframes pg{0%,100%{opacity:.5}50%{opacity:1}}
-        .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,4.25vw,4.7rem);font-weight:900;line-height:0.95;margin-bottom:1.5rem}
+        .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,6rem);font-weight:900;line-height:0.95;margin-bottom:1.5rem}
         .hero-h1 .line1{color:var(--dark)}
         .hero-h1 .line2{background:linear-gradient(135deg,var(--red),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
         .hero-h1 .line3{color:var(--navy)}
         .hero-h1 .line4{background:linear-gradient(135deg,var(--navy),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .hero-sub{color:var(--mid);font-size:1.05rem;line-height:1.75;max-width:480px;margin-bottom:2rem}
         .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
-        .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+        .hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:clamp(0.5rem,1.5vw,1rem)}
         .hstat{background:rgba(255,255,255,.8);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.9);border-radius:14px;padding:.75rem;text-align:center;box-shadow:0 2px 15px rgba(26,47,94,.06)}
         .hstat-val{font-family:'Playfair Display',serif;font-weight:700;color:var(--red);font-size:1.2rem}
         .hstat-lbl{font-size:.65rem;color:var(--light);font-weight:500;margin-top:.15rem}
 
         /* Carousel styling */
-        .hero-right{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:500px}
-        .hero-carousel-wrapper{position:relative;width:100%;max-width:550px;height:500px;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px rgba(26,47,94,0.15);background:rgba(255,255,255,0.5)}
+        .hero-right{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+        .hero-carousel-wrapper{position:relative;width:100%;max-width:550px;aspect-ratio:1/1;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px rgba(26,47,94,0.15);background:rgba(255,255,255,0.5)}
         .hero-carousel-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
         .hero-carousel-image.active{opacity:1}
         .hero-carousel-overlay{position:absolute;inset:0;background:linear-gradient(135deg, rgba(26,47,94,0.05), rgba(200,48,58,0.05));pointer-events:none}
 
         /* Scroll cue */
-        .scroll-cue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--light);animation:bounceY 2s ease-in-out infinite;z-index:5}
+        .scroll-cue{position:absolute;bottom:clamp(1rem,3vh,2rem);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--light);animation:bounceY 2s ease-in-out infinite;z-index:5}
         @keyframes bounceY{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
         .scroll-cue span{font-size:.7rem;letter-spacing:.2em;font-weight:600}
 
@@ -349,22 +350,26 @@ export default function HeroSection() {
 
         /* ── RESPONSIVE ── */
         @media(max-width:1024px){
-          #hero{padding-top:7rem;padding-bottom:3rem}
+          #hero{min-height:auto;padding-block:clamp(60px,10vw,100px) clamp(30px,6vw,80px);display:flex;flex-direction:column}
           .hero-inner{display:flex;flex-direction:column;gap:1.5rem}
           .hero-left{display:contents}
           .hero-tag{order:1;margin-bottom:0}
-          .hero-h1{order:2;margin-bottom:0;font-size:clamp(2.5rem,8vw,3.5rem)}
+          .hero-h1{order:2;margin-bottom:0;font-size:clamp(2.5rem,8vw,4rem)}
           .hero-sub{order:3;margin-bottom:0.5rem}
-          .hero-right{display:flex;order:4;width:100%;height:320px;min-height:unset;margin:1rem 0}
-          .hero-stats{order:5}
-        }
-        @media(max-width:768px){
-          .hero-stats{grid-template-columns:repeat(2,1fr)}
+          .hero-btns{order:4}
+          .hero-right{display:flex;order:5;width:min(100%,700px);height:auto;margin:1rem auto}
+          .hero-stats{order:6}
+          .scroll-cue{position:relative;bottom:0;left:0;transform:none;margin-top:2rem;order:7;animation:none}
         }
         @media(max-width:480px){
-          .hero-h1{font-size:2.2rem}
+          .hero-h1{font-size:clamp(2.2rem,10vw,3rem)}
           .hero-btns{flex-direction:column}
-          .hero-right{height:280px}
+        }
+        @media(max-height:700px) and (min-width: 1025px){
+          #hero{min-height:auto;padding-top:clamp(4rem,10vh,6rem);padding-bottom:clamp(1rem,4vh,2rem)}
+          .hero-inner{gap:clamp(1rem,2vw,2rem)}
+          .hero-h1{font-size:clamp(1.8rem,4vw,4rem);margin-bottom:1rem}
+          .hero-right{transform:scale(0.85);transform-origin:center}
         }
       `}} />
     </section>

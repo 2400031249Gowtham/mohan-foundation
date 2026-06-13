@@ -44,7 +44,7 @@ const fadeUpVariants: Variants = {
 export default function TestimonialsSection() {
 
   const renderTestimonial = (t: typeof testimonials[0], isActive: boolean, isDesktop: boolean) => (
-    <div className={`bg-white/80 backdrop-blur-md border border-white rounded-[24px] p-8 shadow-[0_10px_30px_rgba(26,47,94,0.03)] h-full w-full flex flex-col group transition-all duration-500 select-none pointer-events-auto ${isActive ? 'shadow-[0_20px_50px_rgba(26,47,94,0.08)]' : ''}`}>
+    <div className={`bg-white/80 backdrop-blur-md border border-white rounded-[24px] p-[clamp(1.5rem,3vw,2rem)] shadow-[0_10px_30px_rgba(26,47,94,0.03)] h-full w-full flex flex-col group transition-all duration-500 select-none pointer-events-auto ${isActive ? 'shadow-[0_20px_50px_rgba(26,47,94,0.08)]' : ''}`}>
       <div className="text-[5rem] text-mf-red/5 font-serif leading-none absolute top-4 right-6 pointer-events-none group-hover:text-mf-red/10 transition-colors">"</div>
       <div className="flex items-center gap-0.5 mb-3 text-[#fbbf24] text-[1.1rem]">★★★★★</div>
       <div className="text-[0.65rem] font-bold text-mf-red tracking-[0.1em] mb-4 uppercase">{t.ratingLabel}</div>
@@ -77,7 +77,7 @@ export default function TestimonialsSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="text-center max-w-[1280px] mx-auto px-8 mb-16 flex flex-col items-center"
+        className="text-center container-fluid mb-16 flex flex-col items-center"
       >
         <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 bg-mf-navy/5 border border-mf-navy/10 text-mf-navy px-3.5 py-1.5 rounded-full text-[0.72rem] font-bold tracking-[0.08em] mb-4">
           TESTIMONIALS

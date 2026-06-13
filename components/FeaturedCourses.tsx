@@ -48,11 +48,11 @@ const CourseCard = ({ course, isActive, isDesktop }: { course: Course, isActive:
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`bg-white/70 backdrop-blur-md rounded-[20px] border border-white shadow-[0_10px_30px_rgba(26,47,94,0.03)] transition-all duration-500 flex flex-col md:h-[550px] h-[720px] w-full pointer-events-auto select-none ${isActive ? 'hover:shadow-[0_20px_50px_rgba(26,47,94,0.1)] hover:-translate-y-[12px] hover:scale-[1.03]' : ''}`}
+      className={`bg-white/70 backdrop-blur-md rounded-[20px] border border-white shadow-[0_10px_30px_rgba(26,47,94,0.03)] transition-all duration-500 flex flex-col h-full w-full pointer-events-auto select-none ${isActive ? 'hover:shadow-[0_20px_50px_rgba(26,47,94,0.1)] hover:-translate-y-[12px] hover:scale-[1.03]' : ''}`}
     >
       {/* Image Box */}
       <div 
-        className="relative md:h-[240px] h-[360px] w-full overflow-hidden bg-[#e2e8f0] rounded-t-[20px] transition-transform duration-500 shrink-0"
+        className="relative aspect-video h-auto w-full overflow-hidden bg-[#e2e8f0] rounded-t-[20px] transition-transform duration-500 shrink-0"
         style={{ transform: isActive && isDesktop ? "translateZ(40px)" : "translateZ(0px)", transformStyle: "preserve-3d" }}
       >
         <div className="absolute top-4 left-4 z-10 bg-white/95 backdrop-blur-md text-mf-navy px-3 py-1.5 rounded-full text-[0.65rem] font-bold shadow-[0_4px_10px_rgba(0,0,0,0.1)] pointer-events-none">
@@ -77,7 +77,7 @@ const CourseCard = ({ course, isActive, isDesktop }: { course: Course, isActive:
         style={{ transformStyle: "preserve-3d" }}
       >
         <h3 
-          className="font-bold md:text-[1.15rem] text-xl md:leading-[1.3] leading-tight text-mf-dark mb-4 transition-all duration-500 md:line-clamp-2 md:h-14 min-h-[88px] flex items-start pointer-events-none"
+          className="font-bold md:text-[1.15rem] text-xl md:leading-[1.3] leading-tight text-mf-dark mb-4 transition-all duration-500 flex items-start pointer-events-none"
           style={{ transform: isActive && isDesktop ? "translateZ(25px)" : "translateZ(0px)" }}
         >
           {course.title}

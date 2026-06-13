@@ -96,7 +96,7 @@ export default function FooterSection() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         className="pt-24 pb-16 relative z-10"
       >
-        <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="container-fluid grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Brand & About (Left) */}
           <div className="lg:col-span-4 flex flex-col gap-6">
@@ -123,7 +123,7 @@ export default function FooterSection() {
           </div>
 
           {/* Links Grid (Right) */}
-          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="lg:col-span-8 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[clamp(1.5rem,3vw,3rem)]">
             
             {/* Col 1 — About */}
             <div className="flex flex-col gap-4">
@@ -175,7 +175,7 @@ export default function FooterSection() {
         </div>
         
         {/* Reach Us Sub-section */}
-        <div className="max-w-[1280px] mx-auto px-8 mt-16 pt-10 border-t border-[rgba(0,0,0,0.08)] grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="container-fluid mt-16 pt-10 border-t border-[rgba(0,0,0,0.08)] grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6">
           <a href="mailto:elearning@mohanfoundation.org" className="flex items-center gap-4 bg-[rgba(255,255,255,0.75)] backdrop-blur-[20px] p-4 rounded-[24px] border border-[rgba(0,0,0,0.05)] shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group">
             <div className="w-10 h-10 rounded-full bg-[#D93A43]/10 flex items-center justify-center shrink-0">
               <Mail size={18} className="text-[#D93A43]" />
@@ -208,7 +208,7 @@ export default function FooterSection() {
 
       {/* Bottom Bar */}
       <div className="border-t border-[rgba(0,0,0,0.08)] py-6 relative z-10">
-        <div className="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="container-fluid flex flex-wrap items-center justify-between gap-4">
           <p className="text-[#475569] text-[0.85rem] text-center md:text-left font-medium">
             © 2026 MOHAN Foundation. All Rights Reserved.
           </p>

@@ -134,9 +134,9 @@ export default function FAQSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        className="max-w-[1280px] mx-auto px-8"
+        className="container-fluid"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(300px,380px)_1fr] gap-[clamp(2rem,5vw,4rem)] items-start">
 
           {/* ── LEFT COLUMN ──────────────────────────────────────────────── */}
           <div className="lg:sticky lg:top-32 flex flex-col gap-6">
@@ -159,7 +159,7 @@ export default function FAQSection() {
             </motion.div>
 
             {/* Stats grid */}
-            <motion.div variants={fadeUpVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 mt-4">
+            <motion.div variants={fadeUpVariants} className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] lg:grid-cols-1 gap-4 mt-4">
               {learningStats.map(({ icon: Icon, value, label, bg }) => (
                 <div
                   key={label}

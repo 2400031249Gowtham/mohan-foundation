@@ -93,17 +93,17 @@ export default function AboutUsSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        className="max-w-[1280px] mx-auto px-8"
+        className="container-fluid"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* LEFT COLUMN: Visual Area */}
-          <div className="relative">
+          <div className="relative flex flex-col md:block w-full">
             {/* Main Card with Rings */}
-            <div className="bg-gradient-to-br from-mf-navy to-mf-navy-light rounded-[28px] aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-[0_30px_70px_rgba(26,47,94,0.25)] border border-white/10">
-              <div className="absolute rounded-full border border-white/10 w-[350px] h-[350px] animate-[spin-cw_20s_linear_infinite]"></div>
-              <div className="absolute rounded-full border border-white/10 w-[250px] h-[250px] animate-[spin-ccw_14s_linear_infinite]"></div>
-              <div className="absolute rounded-full border border-white/10 w-[160px] h-[160px] animate-[spin-cw_10s_linear_infinite]"></div>
+            <div className="bg-gradient-to-br from-mf-navy to-mf-navy-light rounded-[28px] aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-[0_30px_70px_rgba(26,47,94,0.25)] border border-white/10 w-full shrink-0">
+              <div className="absolute rounded-full border border-white/10 w-[85%] aspect-square animate-[spin-cw_20s_linear_infinite]"></div>
+              <div className="absolute rounded-full border border-white/10 w-[60%] aspect-square animate-[spin-ccw_14s_linear_infinite]"></div>
+              <div className="absolute rounded-full border border-white/10 w-[35%] aspect-square animate-[spin-cw_10s_linear_infinite]"></div>
               
               <div className="text-center text-white z-10 relative">
                 <div className="text-[4rem] animate-[lhb_2s_ease-in-out_infinite]">❤️</div>
@@ -114,18 +114,20 @@ export default function AboutUsSection() {
               </div>
             </div>
 
-            {/* Est Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-mf-red text-white rounded-[18px] px-6 py-5 shadow-[0_12px_35px_rgba(200,48,58,0.35)]">
-              <div className="font-serif text-[2.2rem] font-black leading-none">1997</div>
-              <div className="text-[0.7rem] opacity-80 mt-1">Est. Year</div>
-              <div className="text-[0.65rem] opacity-70 mt-0.5">Of Service to Life</div>
-            </div>
+            <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-4 w-full justify-between items-stretch">
+              {/* Est Badge */}
+              <div className="md:absolute md:-bottom-6 md:-left-6 bg-mf-red text-white rounded-[18px] px-6 py-5 shadow-[0_12px_35px_rgba(200,48,58,0.35)] shrink-0 grow">
+                <div className="font-serif text-[2.2rem] font-black leading-none">1997</div>
+                <div className="text-[0.7rem] opacity-80 mt-1">Est. Year</div>
+                <div className="text-[0.65rem] opacity-70 mt-0.5">Of Service to Life</div>
+              </div>
 
-            {/* Quote Badge */}
-            <div className="absolute right-[-1.5rem] top-[40%] -translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/50 rounded-[16px] p-4 max-w-[200px] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-              <div className="text-[2rem] text-mf-red/20 font-serif leading-none mb-1">"</div>
-              <div className="text-[0.7rem] text-mf-mid leading-relaxed italic">
-                Our mission is to promote and facilitate ethical organ donation and transplantation, creating a world where no patient dies for want of an organ.
+              {/* Quote Badge */}
+              <div className="md:absolute md:right-[-1.5rem] md:top-[40%] md:-translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/50 rounded-[16px] p-4 w-full md:w-[max-content] md:max-w-[min(200px,40vw)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] grow shrink-0">
+                <div className="text-[2rem] text-mf-red/20 font-serif leading-none mb-1">"</div>
+                <div className="text-[0.7rem] text-mf-mid leading-relaxed italic">
+                  Our mission is to promote and facilitate ethical organ donation and transplantation, creating a world where no patient dies for want of an organ.
+                </div>
               </div>
             </div>
           </div>
@@ -149,7 +151,7 @@ export default function AboutUsSection() {
             </motion.p>
 
             {/* Feature Grid */}
-            <motion.div variants={fadeUpVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full" style={{ perspective: 1000 }}>
+            <motion.div variants={fadeUpVariants} className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-[clamp(1rem,3vw,1.5rem)] mb-8 w-full" style={{ perspective: 1000 }}>
               {featuresData.map((f, i) => (
                 <FeatureCard key={i} {...f} delay={i * 0.15} />
               ))}

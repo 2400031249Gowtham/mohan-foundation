@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Mail, Search, ChevronDown, ChevronUp, Menu, X, BookOpen, Users, Stethoscope, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
@@ -63,6 +63,10 @@ export default function Navbar() {
   const [coursesOpen, setCoursesOpen]   = useState(false); // mobile accordion
   const [coursesHover, setCoursesHover] = useState(false); // desktop hover
   const [scrolled, setScrolled] = useState(false);
+  const [isCompact, setIsCompact] = useState(true); // Default to hamburger for safety
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,6 +74,26 @@ export default function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const checkFit = () => {
+      if (!containerRef.current || !measureRef.current) return;
+      const availableWidth = containerRef.current.offsetWidth;
+      const requiredWidth = measureRef.current.scrollWidth;
+      // Switch to compact if available width is less than required plus a safety margin
+      setIsCompact(availableWidth < requiredWidth + 60);
+    };
+
+    checkFit();
+    const obs = new ResizeObserver(checkFit);
+    if (containerRef.current) obs.observe(containerRef.current);
+    window.addEventListener('resize', checkFit);
+    
+    return () => {
+      obs.disconnect();
+      window.removeEventListener('resize', checkFit);
+    };
   }, []);
 
   useEffect(() => {
@@ -92,7 +116,7 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-400">
       {/* Top Bar - Deep Navy */}
       <div 
-        className="text-white/85 text-[0.78rem] px-8 py-2 relative z-50 flex justify-between items-center gap-4"
+        className="text-white/85 text-[clamp(0.7rem,1.5vw,0.85rem)] px-[clamp(1rem,3vw,2rem)] py-2 relative z-50 flex justify-between items-center gap-[clamp(0.5rem,2vw,1rem)]"
         style={{ background: 'linear-gradient(90deg, #5B2333 0%, #7A2940 50%, #A23B4B 100%)' }}
       >
         {/* Left: Contact Info */}
@@ -117,24 +141,38 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <nav className={`transition-all duration-400 ${scrolled ? 'bg-white/95 backdrop-blur-[20px] shadow-[0_2px_30px_rgba(26,47,94,0.08)]' : 'bg-transparent'} relative z-40`}>
-        <div className="max-w-[1280px] mx-auto px-8 py-3 flex justify-between items-center">
+        <div ref={containerRef} className="container-fluid py-[clamp(0.5rem,1.5vw,1rem)] flex justify-between items-center gap-4 relative">
 
-          {/* Logos + CPD badge */}
-          <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center gap-3 sm:gap-4 decoration-none group">
-            {/* MOHAN Foundation Logo */}
-            <img src="/logo.png" alt="MOHAN Foundation" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
-            
-            {/* CPD Badge */}
-            <img src="/cdp-logo.jpg" alt="CPD Accredited Badge" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
-            
-            {/* CPD Accredited Button */}
-            <div className="hidden sm:flex bg-[#233B76] text-white font-bold text-[0.75rem] md:text-[0.8rem] px-3.5 py-1.5 md:py-2 rounded-[6px] shrink-0 items-center justify-center tracking-wide">
-              CPD Accredited
-            </div>
-          </Link>
+          {/* Invisible Measurement Layer (Only for calculating width) */}
+          <div ref={measureRef} className="absolute left-0 top-0 opacity-0 pointer-events-none flex items-center gap-8 whitespace-nowrap h-0 overflow-hidden">
+             <div className="flex items-center gap-4">
+                <div className="w-[150px] h-[46px]"></div> {/* Logo stand-in */}
+                <div className="w-[120px] h-[46px]"></div> {/* CPD Badge stand-in */}
+             </div>
+             <ul className="flex items-center gap-1">
+                {navLinks.map(n => <li key={n.label} className="px-4 py-2">{n.label}</li>)}
+                <li className="px-4 py-2">Courses</li>
+             </ul>
+             <div className="px-6 py-2.5">Explore Courses</div>
+          </div>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-1 text-[0.85rem] font-medium text-mf-navy">
+          {/* Logos + CPD badge - Mobile Compression */}
+          <div className="flex items-center gap-3 sm:gap-4 justify-start shrink-0">
+            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center decoration-none group">
+              <img src="/logo.png" alt="MOHAN Foundation" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
+            </Link>
+
+            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center gap-3 sm:gap-4 decoration-none group shrink-0">
+              <img src="/cdp-logo.jpg" alt="CPD Accredited Badge" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
+              <div className="hidden sm:flex bg-[#233B76] text-white font-bold text-[0.75rem] md:text-[0.8rem] px-3.5 py-1.5 md:py-2 rounded-[6px] shrink-0 items-center justify-center tracking-wide">
+                CPD Accredited
+              </div>
+            </Link>
+          </div>
+
+          {/* Dynamic Desktop Navigation */}
+          {!isCompact && (
+            <ul className="flex items-center gap-1 text-[0.85rem] font-medium text-mf-navy shrink-0">
             {navLinks.slice(0, 2).map(({ label, href }) => (
               <li key={label}>
                 <Link
@@ -168,7 +206,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[340px] pointer-events-auto"
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[clamp(280px,80vw,400px)] pointer-events-auto"
                   >
                     <div className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(26,47,94,0.12)] border border-gray-100 overflow-hidden flex flex-col p-2 gap-1">
                         {courseItems.map(({ label, desc, icon: Icon }) => (
@@ -209,20 +247,26 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="hidden lg:flex items-center gap-3">
-             <Link href="/#courses" className="bg-mf-red hover:bg-mf-red-light text-white px-6 py-2.5 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-px hover:shadow-[0_8px_25px_rgba(200,48,58,0.35)]">
-              Explore Courses
-            </Link>
-          </div>
+          )}
 
-          {/* Mobile: hamburger */}
-          <button
-            className="lg:hidden text-mf-navy hover:text-mf-red transition-colors p-2"
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
+          {!isCompact && (
+            <div className="flex items-center gap-3 shrink-0">
+               <Link href="/#courses" className="bg-mf-red hover:bg-mf-red-light text-white px-6 py-2.5 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-px hover:shadow-[0_8px_25px_rgba(200,48,58,0.35)] whitespace-nowrap">
+                Explore Courses
+              </Link>
+            </div>
+          )}
+
+          {/* Adaptive Hamburger */}
+          {isCompact && (
+            <button
+              className="text-mf-navy hover:text-mf-red transition-colors p-2 shrink-0 ml-auto"
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -236,7 +280,7 @@ export default function Navbar() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setMenuOpen(false)}
-                className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
               />
 
               {/* Drawer */}
@@ -245,7 +289,7 @@ export default function Navbar() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="lg:hidden fixed top-0 right-0 h-[100vh] w-[80vw] max-w-[360px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-[100] overflow-y-auto flex flex-col"
+                className="fixed top-0 right-0 h-[100vh] w-[min(85vw,400px)] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-[100] overflow-y-auto flex flex-col"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {/* Header with Close Button inside Drawer */}
