@@ -4,11 +4,12 @@ import React from 'react';
 import { Phone, ArrowRight, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 import DnaBackground from './DnaBackground';
-import { motion, useMotionValue, useSpring, useTransform, Variants } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
 const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } }
 };
 
 const sectionVariants: Variants = {

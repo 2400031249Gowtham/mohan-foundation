@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import Infinite3DCarousel from './ui/Infinite3DCarousel';
 
 const testimonials = [
@@ -35,9 +36,9 @@ const testimonials = [
   },
 ];
 
-const fadeUpVariants = {
+const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } }
 };
 
 export default function TestimonialsSection() {

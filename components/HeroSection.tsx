@@ -234,12 +234,12 @@ export default function HeroSection() {
             <motion.div 
               className="absolute w-[320px] h-[320px] max-lg:w-[250px] max-lg:h-[250px] rounded-full border-[1.5px] border-mf-navy/20"
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
+              transition={{ duration: 4, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
             <motion.div 
               className="absolute w-[440px] h-[440px] max-lg:w-[320px] max-lg:h-[320px] rounded-full border-[1.5px] border-mf-red/15"
               animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
-              transition={{ duration: 4, delay: 2, repeat: Infinity, ease: "easeOut" }}
+              transition={{ duration: 4, delay: 2, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
 
             {/* Soft Particle Field (Framer Motion) */}
@@ -259,7 +259,7 @@ export default function HeroSection() {
                 transition={{
                   duration: 6 + Math.random() * 6,
                   repeat: Infinity,
-                  ease: "linear"
+                  ease: [0, 0, 1, 1]
                 }}
               />
             ))}
@@ -267,7 +267,7 @@ export default function HeroSection() {
             {/* Main Visual */}
             <motion.div
               animate={{ scale: [1, 1.05, 1], y: [0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 4, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
               className="relative z-10 w-full h-full"
               style={{
                 /* Extremely aggressive edge masking */

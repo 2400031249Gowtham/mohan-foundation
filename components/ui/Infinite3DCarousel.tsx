@@ -154,7 +154,7 @@ export default function Infinite3DCarousel<T extends { uniqueKey?: string, id?: 
       >
         <motion.div 
           animate={isActive ? { y: [0, -6, 0] } : { y: 0 }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 4, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
           className="w-full h-full p-4" // Padding acts as the visual gap
         >
           {renderCard(item, isActive, !isMobile)}

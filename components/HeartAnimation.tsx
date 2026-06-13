@@ -147,7 +147,7 @@ export default function HeartAnimation() {
           onError={() => setError(true)}
           initial={{ y: 200, opacity: 0, rotateX: 20 }}
           animate={{ y: 0, opacity: loaded ? 1 : 0, rotateX: 0 }}
-          transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+          transition={{ duration: 1.5, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
           style={{
             width: '100%',
             height: '100%',
