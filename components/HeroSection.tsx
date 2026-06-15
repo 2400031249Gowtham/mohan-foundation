@@ -195,29 +195,16 @@ export default function HeroSection() {
       <canvas id="hero-canvas" ref={canvasRef}></canvas>
       <div className="hero-bg-grid"></div>
       <div className="hero-inner">
-        <div className="hero-left" id="heroLeft">
-          <div className="hero-tag"><span className="pulse"></span>CPD Accredited Since 2025</div>
-          <h1 className="hero-h1">
-            <span className="line1" id="hl1">Save Lives</span><br />
-            <span className="line2" id="hl2">With Knowledge</span><br />
-            <span className="line3" id="hl3">Not Just</span><br />
-            <span className="line4" id="hl4">Intention.</span>
-          </h1>
-          <p className="hero-sub">MOHAN Foundation — India's pioneer in organ donation education since 1997. CPD-accredited courses in Transplant Coordination, Brainstem Death, and beyond.</p>
-          <div className="hero-stats" ref={statsRef}>
-            <div className="hstat"><div className="hstat-val" data-count="12000">0</div><div className="hstat-lbl">Students Enrolled</div></div>
-            <div className="hstat"><div className="hstat-val" data-count="200">0</div><div className="hstat-lbl">Expert Instructors</div></div>
-            <div className="hstat"><div className="hstat-val" data-count="98" data-suffix="%">0</div><div className="hstat-lbl">Satisfaction Rate</div></div>
-            <div className="hstat"><div className="hstat-val" data-count="1997" data-raw="true">0</div><div className="hstat-lbl">Est. Year</div></div>
-          </div>
-        </div>
-        <div className="hero-right relative flex items-center justify-center w-full max-w-[700px] mx-auto aspect-square lg:aspect-auto">
-          {/* Large Radial Glow Behind Heart */}
+        <h1 className="hero-h1" style={{ gridArea: 'h1' }}>
+          <span className="line1" id="hl1">Save Lives</span><br />
+          <span className="line2" id="hl2">With Knowledge</span><br />
+          <span className="line3" id="hl3">Not Just</span><br />
+          <span className="line4" id="hl4">Intention.</span>
+        </h1>
+        <p className="hero-sub" style={{ gridArea: 'sub' }}>MOHAN Foundation — India's pioneer in organ donation education since 1997. CPD-accredited courses in Transplant Coordination, Brainstem Death, and beyond.</p>
+        <div className="hero-visual" style={{ gridArea: 'visual' }}>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[clamp(280px,80%,450px)] aspect-square bg-[#C8303A] rounded-full blur-[120px] opacity-[0.25] pointer-events-none z-0 mix-blend-multiply"></div>
-
-          {/* Centered visual container */}
-          <div className="relative lg:absolute lg:top-1/2 lg:left-[55%] lg:-translate-x-1/2 lg:-translate-y-1/2 w-full aspect-square flex items-center justify-center pointer-events-none z-10 mx-auto">
-            {/* DNA Background */}
+          <div className="relative lg:absolute lg:top-1/2 lg:left-[55%] lg:-translate-x-1/2 lg:-translate-y-1/2 w-full aspect-square flex items-center justify-center pointer-events-none z-10 mx-auto max-w-[500px]">
             <motion.div 
                className="absolute inset-0 opacity-[0.04]"
                animate={{ x: [0, -100, 0] }}
@@ -229,20 +216,16 @@ export default function HeroSection() {
                  WebkitMaskImage: 'radial-gradient(circle at center, black, transparent 70%)'
                }}
             />
-
-            {/* Concentric Pulse Rings */}
             <motion.div 
-              className="absolute w-[clamp(250px,35vw,320px)] aspect-square rounded-full border-[1.5px] border-mf-navy/20"
+              className="absolute w-[clamp(250px,65vw,320px)] aspect-square rounded-full border-[1.5px] border-mf-navy/20"
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
             <motion.div 
-              className="absolute w-[clamp(320px,45vw,440px)] aspect-square rounded-full border-[1.5px] border-mf-red/15"
+              className="absolute w-[clamp(320px,85vw,440px)] aspect-square rounded-full border-[1.5px] border-mf-red/15"
               animate={{ scale: [1, 1.5], opacity: [0.4, 0] }}
               transition={{ duration: 4, delay: 2, repeat: Infinity, ease: [0, 0, 0.2, 1] }}
             />
-
-            {/* Soft Particle Field (Framer Motion) */}
             {isMounted && Array.from({ length: 20 }).map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
@@ -263,8 +246,6 @@ export default function HeroSection() {
                 }}
               />
             ))}
-
-            {/* Main Visual */}
             <motion.div
               animate={{ scale: [1, 1.05, 1], y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
@@ -313,63 +294,78 @@ export default function HeroSection() {
         /* ── THREE.JS CANVAS ── */
         #hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
 
-        /* ── HERO ── */
-        #hero{min-height:min(100svh, 1100px);display:flex;align-items:center;position:relative;overflow:hidden;padding-top:8rem;padding-bottom:3rem;background:#FDF8F3}
-        .hero-bg-grid{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(var(--red) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:1}
-        .hero-inner{max-width:2560px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,4vw,5rem);align-items:center;position:relative;z-index:2;width:100%}
-        .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,48,58,.08);border:1px solid rgba(200,48,58,.2);color:var(--red);padding:.4rem 1rem;border-radius:999px;font-size:clamp(0.7rem,1vw,0.85rem);font-weight:700;letter-spacing:.07em;margin-bottom:1.5rem}
-        .hero-tag .pulse{width:7px;height:7px;background:var(--red);border-radius:50%;animation:pg 2s ease-in-out infinite}
-        @keyframes pg{0%,100%{opacity:.5}50%{opacity:1}}
-        .hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,6rem);font-weight:900;line-height:0.95;margin-bottom:1.5rem}
-        .hero-h1 .line1{color:var(--dark)}
-        .hero-h1 .line2{background:linear-gradient(135deg,var(--red),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
-        .hero-h1 .line3{color:var(--navy)}
-        .hero-h1 .line4{background:linear-gradient(135deg,var(--navy),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .hero-sub{color:var(--mid);font-size:1.05rem;line-height:1.75;max-width:480px;margin-bottom:2rem}
-        .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
-        .hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:clamp(0.5rem,1.5vw,1rem)}
-        .hstat{background:rgba(255,255,255,.8);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.9);border-radius:14px;padding:.75rem;text-align:center;box-shadow:0 2px 15px rgba(26,47,94,.06)}
-        .hstat-val{font-family:'Playfair Display',serif;font-weight:700;color:var(--red);font-size:1.2rem}
-        .hstat-lbl{font-size:.65rem;color:var(--light);font-weight:500;margin-top:.15rem}
+        /* ── HERO MOBILE FIRST STYLES ── */
+        #hero { min-height: auto; padding-block: clamp(80px, 12vw, 100px) clamp(30px, 6vw, 60px); display: flex; flex-direction: column; background: #FDF8F3; position: relative; overflow: hidden; }
+        .hero-bg-grid { position: absolute; inset: 0; opacity: .18; background-image: radial-gradient(var(--red) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; z-index: 1; }
+        
+        .hero-inner { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 64px); display: flex; flex-direction: column; align-items: center; gap: 24px; position: relative; z-index: 2; width: 100%; text-align: center; }
+        
+        .hero-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 10vw, 3.5rem); font-weight: 900; line-height: 0.95; }
+        .hero-h1 .line1 { color: var(--dark); }
+        .hero-h1 .line2 { background: linear-gradient(135deg, var(--red), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic; }
+        .hero-h1 .line3 { color: var(--navy); }
+        .hero-h1 .line4 { background: linear-gradient(135deg, var(--navy), var(--red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        
+        .hero-sub { color: var(--mid); font-size: clamp(0.95rem, 3vw, 1.05rem); line-height: 1.6; max-width: 480px; margin: 0 auto; }
+        
+        .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: auto; padding: 2rem 0; margin: 0 auto; }
+        
+        .hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: clamp(0.5rem, 2vw, 1rem); width: 100%; max-width: 600px; margin: 0 auto; }
+        .hstat { background: rgba(255,255,255,.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.9); border-radius: 14px; padding: .75rem; text-align: center; box-shadow: 0 2px 15px rgba(26,47,94,.06); }
+        .hstat-val { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--red); font-size: 1.2rem; }
+        .hstat-lbl { font-size: .65rem; color: var(--light); font-weight: 500; margin-top: .15rem; }
+        
+        .scroll-cue { display: none; }
 
-        /* Carousel styling */
-        .hero-right{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-        .hero-carousel-wrapper{position:relative;width:100%;max-width:550px;aspect-ratio:1/1;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px rgba(26,47,94,0.15);background:rgba(255,255,255,0.5)}
-        .hero-carousel-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
-        .hero-carousel-image.active{opacity:1}
-        .hero-carousel-overlay{position:absolute;inset:0;background:linear-gradient(135deg, rgba(26,47,94,0.05), rgba(200,48,58,0.05));pointer-events:none}
-
-        /* Scroll cue */
-        .scroll-cue{position:absolute;bottom:clamp(1rem,3vh,2rem);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--light);animation:bounceY 2s ease-in-out infinite;z-index:5}
-        @keyframes bounceY{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
-        .scroll-cue span{font-size:.7rem;letter-spacing:.2em;font-weight:600}
-
-        /* Shared button */
-        .btn-primary{background:var(--red);color:#fff;padding:.6rem 1.4rem;border-radius:999px;font-weight:600;font-size:.85rem;text-decoration:none;transition:all .25s;border:none;cursor:pointer}
-        .btn-primary:hover{background:var(--red2);box-shadow:0 8px 25px rgba(200,48,58,.35);transform:translateY(-1px)}
-
-        /* ── RESPONSIVE ── */
-        @media(max-width:1024px){
-          #hero{min-height:auto;padding-block:clamp(60px,10vw,100px) clamp(30px,6vw,80px);display:flex;flex-direction:column}
-          .hero-inner{display:flex;flex-direction:column;gap:1.5rem}
-          .hero-left{display:contents}
-          .hero-tag{order:1;margin-bottom:0}
-          .hero-h1{order:2;margin-bottom:0;font-size:clamp(2.5rem,8vw,4rem)}
-          .hero-sub{order:3;margin-bottom:0.5rem}
-          .hero-btns{order:4}
-          .hero-right{display:flex;order:5;width:min(100%,700px);height:auto;margin:1rem auto}
-          .hero-stats{order:6}
-          .scroll-cue{position:relative;bottom:0;left:0;transform:none;margin-top:2rem;order:7;animation:none}
+        /* TABLET (768px - 1023px) */
+        @media (min-width: 768px) {
+          .hero-inner { gap: 32px; }
+          .hero-h1 { font-size: clamp(3.5rem, 6vw, 4.5rem); }
+          .hero-visual { padding: 4rem 0; }
         }
-        @media(max-width:480px){
-          .hero-h1{font-size:clamp(2.2rem,10vw,3rem)}
-          .hero-btns{flex-direction:column}
-        }
-        @media(max-height:700px) and (min-width: 1025px){
-          #hero{min-height:auto;padding-top:clamp(4rem,10vh,6rem);padding-bottom:clamp(1rem,4vh,2rem)}
-          .hero-inner{gap:clamp(1rem,2vw,2rem)}
-          .hero-h1{font-size:clamp(1.8rem,4vw,4rem);margin-bottom:1rem}
-          .hero-right{transform:scale(0.85);transform-origin:center}
+
+        /* DESKTOP (1024px+) */
+        @media (min-width: 1024px) {
+          #hero { min-height: min(100svh, 1100px); padding-top: 8rem; padding-bottom: 3rem; display: flex; flex-direction: row; }
+          
+          .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto 1fr auto;
+            grid-template-areas: 
+              "h1 visual"
+              "sub visual"
+              "stats visual"
+              "scroll scroll";
+            gap: 1.5rem 4rem;
+            align-items: start;
+            text-align: left;
+            margin: 0 auto;
+          }
+          
+          .hero-h1, .hero-sub { text-align: left; margin: 0; }
+          
+          .hero-visual { padding: 0; position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; margin: 0; }
+          
+          .hero-stats { align-self: end; margin: 0; margin-top: 2rem; max-width: 100%; }
+          
+          .scroll-cue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            color: var(--light);
+            position: absolute;
+            bottom: clamp(1rem, 3vh, 2rem);
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounceY 2s ease-in-out infinite;
+            margin-top: 0;
+            width: auto;
+            opacity: 0.6;
+          }
+          .scroll-cue span { font-size: .7rem; letter-spacing: .2em; font-weight: 600; }
+          @keyframes bounceY { 0%, 100% { transform: translateX(-50%) translateY(0) } 50% { transform: translateX(-50%) translateY(-8px) } }
         }
       `}} />
     </section>

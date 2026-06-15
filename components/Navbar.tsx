@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Search, ChevronDown, ChevronUp, Menu, X, BookOpen, Users, Stethoscope, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
@@ -32,21 +32,25 @@ const courseItems = [
     label: 'Courses for Professionals',
     desc: 'Advanced programmes designed for working professionals.',
     icon: Users,
+    href: '/#ecosystem'
   },
   {
-    label: 'Courses for General Public',
+    label: 'General Courses',
     desc: 'Accessible learning for everyone, at your own pace.',
     icon: BookOpen,
+    href: '/#ecosystem'
   },
   {
     label: 'Surgical Retrieval Courses',
     desc: 'Specialist training in organ and tissue retrieval.',
     icon: Stethoscope,
+    href: '/#ecosystem'
   },
   {
     label: 'Other Courses',
     desc: 'Explore our full catalogue of educational offerings.',
     icon: GraduationCap,
+    href: '/#ecosystem'
   },
 ];
 
@@ -63,10 +67,6 @@ export default function Navbar() {
   const [coursesOpen, setCoursesOpen]   = useState(false); // mobile accordion
   const [coursesHover, setCoursesHover] = useState(false); // desktop hover
   const [scrolled, setScrolled] = useState(false);
-  const [isCompact, setIsCompact] = useState(true); // Default to hamburger for safety
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,26 +74,6 @@ export default function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const checkFit = () => {
-      if (!containerRef.current || !measureRef.current) return;
-      const availableWidth = containerRef.current.offsetWidth;
-      const requiredWidth = measureRef.current.scrollWidth;
-      // Switch to compact if available width is less than required plus a safety margin
-      setIsCompact(availableWidth < requiredWidth + 60);
-    };
-
-    checkFit();
-    const obs = new ResizeObserver(checkFit);
-    if (containerRef.current) obs.observe(containerRef.current);
-    window.addEventListener('resize', checkFit);
-    
-    return () => {
-      obs.disconnect();
-      window.removeEventListener('resize', checkFit);
-    };
   }, []);
 
   useEffect(() => {
@@ -113,7 +93,7 @@ export default function Navbar() {
   }, [menuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-400">
+    <header className={`sticky top-0 left-0 w-full z-[9999] flex flex-col bg-white transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(0,0,0,0.08)]' : ''}`}>
       {/* Top Bar - Deep Navy */}
       <div 
         className="text-white/85 text-[clamp(0.7rem,1.5vw,0.85rem)] px-[clamp(1rem,3vw,2rem)] py-2 relative z-50 flex justify-between items-center gap-[clamp(0.5rem,2vw,1rem)]"
@@ -140,39 +120,45 @@ export default function Navbar() {
       </div>
 
       {/* Main Navbar */}
-      <nav className={`transition-all duration-400 ${scrolled ? 'bg-white/95 backdrop-blur-[20px] shadow-[0_2px_30px_rgba(26,47,94,0.08)]' : 'bg-transparent'} relative z-40`}>
-        <div ref={containerRef} className="container-fluid py-[clamp(0.5rem,1.5vw,1rem)] flex justify-between items-center gap-4 relative">
+      <nav className="relative z-[9999] bg-white">
+        <div className="container-fluid py-[clamp(0.5rem,1.5vw,1rem)] flex flex-col lg:flex-row justify-between items-center gap-4 relative">
 
-          {/* Invisible Measurement Layer (Only for calculating width) */}
-          <div ref={measureRef} className="absolute left-0 top-0 opacity-0 pointer-events-none flex items-center gap-8 whitespace-nowrap h-0 overflow-hidden">
-             <div className="flex items-center gap-4">
-                <div className="w-[150px] h-[46px]"></div> {/* Logo stand-in */}
-                <div className="w-[120px] h-[46px]"></div> {/* CPD Badge stand-in */}
-             </div>
-             <ul className="flex items-center gap-1">
-                {navLinks.map(n => <li key={n.label} className="px-4 py-2">{n.label}</li>)}
-                <li className="px-4 py-2">Courses</li>
-             </ul>
-             <div className="px-6 py-2.5">Explore Courses</div>
-          </div>
-
-          {/* Logos + CPD badge - Mobile Compression */}
-          <div className="flex items-center gap-3 sm:gap-4 justify-start shrink-0">
-            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center decoration-none group">
+          {/* Row 1: Logo + CPD (Tablet/Desktop) + Hamburger */}
+          <div className="flex w-full lg:w-auto items-center justify-between lg:justify-start gap-4 lg:gap-6 shrink-0 flex-wrap sm:flex-nowrap">
+            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center decoration-none group shrink-0">
               <img src="/logo.png" alt="MOHAN Foundation" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
             </Link>
 
-            <Link href="/" onClick={() => setMenuOpen(false)} aria-label="Go to home" className="flex items-center gap-3 sm:gap-4 decoration-none group shrink-0">
-              <img src="/cdp-logo.jpg" alt="CPD Accredited Badge" className="h-10 md:h-[46px] w-auto object-contain shrink-0" />
-              <div className="hidden sm:flex bg-[#233B76] text-white font-bold text-[0.75rem] md:text-[0.8rem] px-3.5 py-1.5 md:py-2 rounded-[6px] shrink-0 items-center justify-center tracking-wide">
-                CPD Accredited
+            {/* Tablet/Desktop CPD Elements (hidden < md) */}
+            <div className="hidden md:flex lg:flex items-center gap-3 lg:gap-4 shrink-0 border-l border-gray-200 pl-3 lg:pl-4 ml-1 lg:ml-2">
+              <img src="/cdp-logo.jpg" alt="CPD Accredited" className="h-[38px] lg:h-[46px] w-auto object-contain shrink-0" />
+              <div className="inline-flex items-center gap-2 bg-mf-red/10 border border-mf-red/20 text-mf-red px-3 lg:px-4 py-1.5 rounded-full text-[0.7rem] lg:text-[0.75rem] font-bold tracking-[0.05em] whitespace-nowrap">
+                <span className="w-2 h-2 bg-mf-red rounded-full animate-pulse"></span>
+                CPD Accredited Since 2025
               </div>
-            </Link>
+            </div>
+
+            {/* Mobile/Tablet Hamburger (< 1024px) */}
+            <button
+              className="lg:hidden text-mf-navy hover:text-mf-red transition-colors p-2 shrink-0 md:ml-auto"
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
           </div>
 
-          {/* Dynamic Desktop Navigation */}
-          {!isCompact && (
-            <ul className="flex items-center gap-1 text-[0.85rem] font-medium text-mf-navy shrink-0">
+          {/* Row 2 on Mobile ONLY (hidden >= md) */}
+          <div className="flex md:hidden w-full flex-wrap items-center justify-center gap-2 py-2 shrink-0">
+            <img src="/cdp-logo.jpg" alt="CPD Accredited" className="h-10 w-10 object-contain shrink-0" />
+            <div className="inline-flex items-center gap-2 bg-mf-red/10 border border-mf-red/20 text-mf-red px-3 py-1.5 rounded-full text-[0.75rem] font-bold tracking-[0.05em] whitespace-nowrap">
+              <span className="w-2 h-2 bg-mf-red rounded-full animate-pulse"></span>
+              CPD Accredited Since 2025
+            </div>
+          </div>
+
+          {/* Desktop Navigation (>= 1024px) */}
+          <ul className="hidden lg:flex items-center gap-1 text-[0.85rem] font-medium text-mf-navy shrink-0 ml-auto">
             {navLinks.slice(0, 2).map(({ label, href }) => (
               <li key={label}>
                 <Link
@@ -209,10 +195,14 @@ export default function Navbar() {
                     className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[clamp(280px,80vw,400px)] pointer-events-auto"
                   >
                     <div className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(26,47,94,0.12)] border border-gray-100 overflow-hidden flex flex-col p-2 gap-1">
-                        {courseItems.map(({ label, desc, icon: Icon }) => (
-                          <a
+                        {courseItems.map(({ label, desc, icon: Icon, href }) => (
+                          <Link
                             key={label}
-                            href="#"
+                            href={href}
+                            onClick={() => {
+                              setCoursesHover(false);
+                              setMenuOpen(false);
+                            }}
                             className="flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-mf-blush group/item transition-colors"
                           >
                             <div className="mt-0.5 w-8 h-8 rounded-lg bg-mf-red/10 group-hover/item:bg-mf-red flex items-center justify-center flex-shrink-0 transition-all">
@@ -226,7 +216,7 @@ export default function Navbar() {
                                 {desc}
                               </p>
                             </div>
-                          </a>
+                          </Link>
                         ))}
                     </div>
                   </motion.div>
@@ -247,26 +237,12 @@ export default function Navbar() {
             ))}
           </ul>
 
-          )}
 
-          {!isCompact && (
-            <div className="flex items-center gap-3 shrink-0">
-               <Link href="/#courses" className="bg-mf-red hover:bg-mf-red-light text-white px-6 py-2.5 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-px hover:shadow-[0_8px_25px_rgba(200,48,58,0.35)] whitespace-nowrap">
-                Explore Courses
-              </Link>
-            </div>
-          )}
-
-          {/* Adaptive Hamburger */}
-          {isCompact && (
-            <button
-              className="text-mf-navy hover:text-mf-red transition-colors p-2 shrink-0 ml-auto"
-              onClick={() => setMenuOpen(o => !o)}
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X size={26} /> : <Menu size={26} />}
-            </button>
-          )}
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
+             <Link href="/#courses" className="bg-mf-red hover:bg-mf-red-light text-white px-6 py-2.5 rounded-full font-semibold text-[0.85rem] transition-all hover:-translate-y-px hover:shadow-[0_8px_25px_rgba(200,48,58,0.35)] whitespace-nowrap">
+              Explore Courses
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -280,39 +256,44 @@ export default function Navbar() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setMenuOpen(false)}
-                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9997]"
               />
 
               {/* Drawer */}
               <motion.div 
-                variants={drawerVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="fixed top-0 right-0 h-[100vh] w-[min(85vw,400px)] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] z-[100] overflow-y-auto flex flex-col"
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ duration: 0.3 }}
+                className="lg:hidden fixed top-0 right-0 h-[100dvh] w-[min(85vw,360px)] bg-white shadow-2xl z-[10000] overflow-y-auto flex flex-col"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
-                {/* Header with Close Button inside Drawer */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                  <span className="font-bold text-mf-navy text-[1.1rem]">Menu</span>
-                  <button onClick={() => setMenuOpen(false)} className="text-mf-navy hover:text-mf-red transition-colors p-1" aria-label="Close menu">
-                    <X size={26} />
+                <header className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
+                  <span className="text-sm font-semibold tracking-wide text-mf-navy">
+                    MENU
+                  </span>
+                  <button
+                    aria-label="Close Menu"
+                    onClick={() => setMenuOpen(false)}
+                    className="h-[44px] w-[44px] -mr-2 rounded-full flex items-center justify-center text-mf-navy hover:text-mf-red transition-colors"
+                  >
+                    <X size={22} />
                   </button>
-                </div>
+                </header>
 
                 <motion.ul 
                   variants={menuStaggerVariants}
                   initial="hidden"
                   animate="visible"
-                  className="flex flex-col px-6 py-4 gap-1"
+                  className="flex flex-col w-full max-w-[280px] mx-auto pt-6 pb-6 grow px-0"
                 >
 
                 {navLinks.slice(0, 2).map(({ label, href }) => (
-                  <motion.li key={label} variants={menuItemVariants}>
+                  <motion.li key={label} variants={menuItemVariants} className="border-b border-gray-100 last:border-b-0 mb-0">
                     <Link
                       href={href}
                       onClick={() => setMenuOpen(false)}
-                      className="block w-full px-4 py-3 rounded-xl text-mf-dark font-medium hover:bg-mf-blush hover:text-mf-red transition-colors text-[0.95rem]"
+                      className="flex items-center w-full py-[12px] px-[20px] min-h-[44px] text-mf-dark font-medium hover:text-mf-red transition-colors text-[1rem] leading-[1.4]"
                     >
                       {label}
                     </Link>
@@ -320,10 +301,10 @@ export default function Navbar() {
                 ))}
 
                 {/* Courses accordion */}
-                <motion.li variants={menuItemVariants}>
-                  <div className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-mf-dark font-medium hover:bg-mf-blush hover:text-mf-red transition-colors text-[0.95rem] cursor-pointer" onClick={() => setCoursesOpen(o => !o)}>
+                <motion.li variants={menuItemVariants} className="border-b border-gray-100 last:border-b-0 mb-0">
+                  <div className="w-full flex items-center justify-between py-[12px] px-[20px] min-h-[44px] text-mf-dark font-medium hover:text-mf-red transition-colors text-[1rem] leading-[1.4] cursor-pointer" onClick={() => setCoursesOpen(o => !o)}>
                     <span>Courses</span>
-                    {coursesOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    {coursesOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                   </div>
 
                   <AnimatePresence>
@@ -350,19 +331,19 @@ export default function Navbar() {
                 </motion.li>
 
                 {navLinks.slice(2).map(({ label, href }) => (
-                  <motion.li key={label} variants={menuItemVariants}>
+                  <motion.li key={label} variants={menuItemVariants} className="border-b border-gray-100 last:border-b-0 mb-0">
                     <Link
                       href={href}
                       onClick={() => setMenuOpen(false)}
-                      className="block w-full px-4 py-3 rounded-xl text-mf-dark font-medium hover:bg-mf-blush hover:text-mf-red transition-colors text-[0.95rem]"
+                      className="flex items-center w-full py-[12px] px-[20px] min-h-[44px] text-mf-dark font-medium hover:text-mf-red transition-colors text-[1rem] leading-[1.4]"
                     >
                       {label}
                     </Link>
                   </motion.li>
                 ))}
 
-                <motion.li className="pt-4 pb-2" variants={menuItemVariants}>
-                   <Link href="/#courses" onClick={() => setMenuOpen(false)} className="block text-center w-full bg-mf-red hover:bg-mf-red-light text-white px-6 py-3 rounded-full font-semibold text-[0.95rem] transition-all">
+                <motion.li className="mt-[20px] px-[20px]" variants={menuItemVariants}>
+                   <Link href="/#courses" onClick={() => setMenuOpen(false)} className="flex items-center justify-center w-full bg-mf-red hover:bg-mf-red-light text-white px-6 py-[12px] rounded-full font-semibold text-[0.95rem] transition-all leading-[1.4]">
                     Explore Courses
                   </Link>
                 </motion.li>

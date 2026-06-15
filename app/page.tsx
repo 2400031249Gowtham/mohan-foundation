@@ -1,6 +1,6 @@
 import AboutUsSection from "@/components/AboutUsSection";
 import FAQSection from "@/components/FAQSection";
-import FeaturedCourses from "@/components/FeaturedCourses";
+import KnowledgeEcosystem from "@/components/KnowledgeEcosystem";
 import FooterSection from "@/components/FooterSection";
 import HeroSection from "@/components/HeroSection";
 import ThrivingSection from "@/components/QoutesSection";
@@ -17,7 +17,7 @@ export default function Home() {
       </div>
       
       <ScrollReveal>
-        <FeaturedCourses />
+        <KnowledgeEcosystem />
       </ScrollReveal>
       
       <ScrollReveal>

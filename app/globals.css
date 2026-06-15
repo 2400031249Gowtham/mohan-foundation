@@ -35,7 +35,7 @@
 }
 
 html, body, #__next {
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
@@ -44,6 +44,17 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   scroll-behavior: smooth;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  touch-action: none !important;
+}
+
+html.modal-open {
+  overflow: hidden !important;
 }
 
 .container-fluid {

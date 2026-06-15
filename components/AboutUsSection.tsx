@@ -98,7 +98,7 @@ export default function AboutUsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* LEFT COLUMN: Visual Area */}
-          <div className="relative flex flex-col md:block w-full">
+          <div className="relative flex flex-col lg:block w-full">
             {/* Main Card with Rings */}
             <div className="bg-gradient-to-br from-mf-navy to-mf-navy-light rounded-[28px] aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-[0_30px_70px_rgba(26,47,94,0.25)] border border-white/10 w-full shrink-0">
               <div className="absolute rounded-full border border-white/10 w-[85%] aspect-square animate-[spin-cw_20s_linear_infinite]"></div>
@@ -114,16 +114,16 @@ export default function AboutUsSection() {
               </div>
             </div>
 
-            <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-4 w-full justify-between items-stretch">
+            <div className="mt-4 lg:mt-0 flex flex-col sm:flex-row gap-4 w-full justify-between items-stretch">
               {/* Est Badge */}
-              <div className="md:absolute md:-bottom-6 md:-left-6 bg-mf-red text-white rounded-[18px] px-6 py-5 shadow-[0_12px_35px_rgba(200,48,58,0.35)] shrink-0 grow">
+              <div className="lg:absolute lg:-bottom-6 lg:-left-6 bg-mf-red text-white rounded-[18px] px-6 py-5 shadow-[0_12px_35px_rgba(200,48,58,0.35)] shrink-0 grow lg:grow-0">
                 <div className="font-serif text-[2.2rem] font-black leading-none">1997</div>
                 <div className="text-[0.7rem] opacity-80 mt-1">Est. Year</div>
                 <div className="text-[0.65rem] opacity-70 mt-0.5">Of Service to Life</div>
               </div>
 
               {/* Quote Badge */}
-              <div className="md:absolute md:right-[-1.5rem] md:top-[40%] md:-translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/50 rounded-[16px] p-4 w-full md:w-[max-content] md:max-w-[min(200px,40vw)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] grow shrink-0">
+              <div className="lg:absolute lg:right-[-1.5rem] lg:top-[40%] lg:-translate-y-1/2 bg-white/90 backdrop-blur-md border border-white/50 rounded-[16px] p-4 w-full lg:w-[max-content] lg:max-w-[min(200px,40vw)] shadow-[0_10px_30px_rgba(0,0,0,0.08)] grow shrink-0 lg:grow-0">
                 <div className="text-[2rem] text-mf-red/20 font-serif leading-none mb-1">"</div>
                 <div className="text-[0.7rem] text-mf-mid leading-relaxed italic">
                   Our mission is to promote and facilitate ethical organ donation and transplantation, creating a world where no patient dies for want of an organ.
